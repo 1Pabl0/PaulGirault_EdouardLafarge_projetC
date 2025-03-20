@@ -10,6 +10,10 @@ int Menu(){
     printf("5. Quitter\n");
     scanf("%d",&nombre);
     printf("Votre choix : %d",nombre);
+    while(nombre>5 || nombre<1){
+        printf("Veuillez choisir une option : \n");
+        scanf("%d",&nombre);
+    }
 
     return nombre;
 }
