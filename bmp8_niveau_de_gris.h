@@ -11,8 +11,13 @@ typedef struct {
     unsigned int dataSize;
 } t_bmp8;
 
-
-
-
+/*
+ * — header : représente l’en-tête du fichier BMP. Cet en-tête est composé de 54 octets.
+— colorTable : représente la table de couleur de l’image. Cette table est composée de 1024 octets. On
+rappelle que pour une image de 8 bits de profondeur, la table de couleur obligatoirement présente.
+— data : représente les données de l’image. Ces données sont stockées sous forme de tableau d’octets.
+— width : représente la largeur de l’image en pixels (Située à l’offset 18 de l’en-tête).
+— height : représente la hauteur de l’image en pixels (Située à l’offset 22 de l’en-tête).
+ */
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_NIVEAU_DE_GRIS_H
