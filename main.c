@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include "menu.h"
 
 int main() {
-    printf("Hello, World!\n");
+    Menu();
     return 0;
 }

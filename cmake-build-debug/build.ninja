@@ -57,6 +57,30 @@ build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/main.c.o: C_COMPILER__Pa
   TARGET_COMPILE_PDB = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/
   TARGET_PDB = PaulGirault_EdouardLafarge_projetC.pdb
 
+build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_niveau_de_gris.c.o: C_COMPILER__PaulGirault_EdouardLafarge_projetC_unscanned_Debug /Users/paulgirault/CLionProjects/PaulGirault_EdouardLafarge_projetC/bmp8_niveau_de_gris.c || cmake_object_order_depends_target_PaulGirault_EdouardLafarge_projetC
+  DEP_FILE = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_niveau_de_gris.c.o.d
+  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
+  OBJECT_FILE_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
+  TARGET_COMPILE_PDB = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/
+  TARGET_PDB = PaulGirault_EdouardLafarge_projetC.pdb
+
+build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/menu.c.o: C_COMPILER__PaulGirault_EdouardLafarge_projetC_unscanned_Debug /Users/paulgirault/CLionProjects/PaulGirault_EdouardLafarge_projetC/menu.c || cmake_object_order_depends_target_PaulGirault_EdouardLafarge_projetC
+  DEP_FILE = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/menu.c.o.d
+  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
+  OBJECT_FILE_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
+  TARGET_COMPILE_PDB = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/
+  TARGET_PDB = PaulGirault_EdouardLafarge_projetC.pdb
+
+build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_couleur.c.o: C_COMPILER__PaulGirault_EdouardLafarge_projetC_unscanned_Debug /Users/paulgirault/CLionProjects/PaulGirault_EdouardLafarge_projetC/bmp8_couleur.c || cmake_object_order_depends_target_PaulGirault_EdouardLafarge_projetC
+  DEP_FILE = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_couleur.c.o.d
+  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
+  OBJECT_FILE_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
+  TARGET_COMPILE_PDB = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/
+  TARGET_PDB = PaulGirault_EdouardLafarge_projetC.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PaulGirault_EdouardLafarge_projetC
@@ -65,7 +89,7 @@ build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/main.c.o: C_COMPILER__Pa
 #############################################
 # Link the executable PaulGirault_EdouardLafarge_projetC
 
-build PaulGirault_EdouardLafarge_projetC: C_EXECUTABLE_LINKER__PaulGirault_EdouardLafarge_projetC_Debug CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/main.c.o
+build PaulGirault_EdouardLafarge_projetC: C_EXECUTABLE_LINKER__PaulGirault_EdouardLafarge_projetC_Debug CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/main.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_niveau_de_gris.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/menu.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_couleur.c.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk
   OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
   POST_BUILD = :
