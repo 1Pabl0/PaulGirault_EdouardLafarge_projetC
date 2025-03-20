@@ -2,7 +2,7 @@
 #define PAULGIRAULT_EDOUARDLAFARGE_PROJETC_MENU_H
 
 int Menu();
-
+int menu_filtres();
 
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_MENU_H
