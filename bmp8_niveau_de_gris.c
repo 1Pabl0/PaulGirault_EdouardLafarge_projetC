@@ -36,3 +36,4 @@ void bmp8_printInfo(t_bmp8 * img){
 
 }
 
+print("ff");
