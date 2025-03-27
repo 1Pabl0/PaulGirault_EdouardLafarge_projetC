@@ -17,21 +17,11 @@ t_bmp8 * bmp8_loadImage(const char * filename){
     }
     //prototupe de fread -> size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
     fread(header,sizeof(unsigned char ),54,pfile);
-
-    unsigned int width = *(unsigned int *)&header[18];
-}
-void bmp8_saveImage(const char * filename, t_bmp8 * img){
-    FILE *file = fopen(filename, "wb");
-    if (file == NULL) {
-        printf("Erreur lors de l'ouverture du fichier%s\n",filename);
-        return;
+    for (int i = 0; i < 54; ++i) {
+        printf("%c \n",header[i]);
     }
-    fwrite(img->header, sizeof(unsigned char), 54, file);
-    fwrite(img->data, sizeof(unsigned char), img->width * img->height, file);
-    fclose(file);
-    printf("Image enregistrée avec succès dans %s\n", filename);
-}
-
-void bmp8_printInfo(t_bmp8 * img){
+    unsigned int width = *(unsigned int*)&header[18];
+    unsigned int height = *(unsigned int*)&header[22];
+    unsigned short nombre_bit_couleur = *(unsigned short* )&header[28];
 
 }
