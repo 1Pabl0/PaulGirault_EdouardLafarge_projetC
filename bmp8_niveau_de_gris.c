@@ -32,4 +32,6 @@ void bmp8_saveImage(const char * filename, t_bmp8 * img){
     printf("Image enregistrée avec succès dans %s\n", filename);
 }
 
+void bmp8_printInfo(t_bmp8 * img){
 
+}
