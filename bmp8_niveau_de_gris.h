@@ -16,10 +16,6 @@ void bmp8_saveImage(const char * filename, t_bmp8 * img);
 void bmp8_free(t_bmp8 * img);
 void bmp8_printInfo(t_bmp8 * img);
 
-
-
-
-
 /*
  * — header : représente l’en-tête du fichier BMP. Cet en-tête est composé de 54 octets.
 — colorTable : représente la table de couleur de l’image. Cette table est composée de 1024 octets. On
