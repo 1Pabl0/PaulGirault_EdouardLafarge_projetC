@@ -25,3 +25,4 @@ t_bmp8 * bmp8_loadImage(const char * filename){
     unsigned short nombre_bit_couleur = *(unsigned short* )&header[28];
 
 }
+printf("hello");
