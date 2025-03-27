@@ -16,12 +16,20 @@ t_bmp8 * bmp8_loadImage(const char * filename){
         exit(1);
     }
     //prototupe de fread -> size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
-    fread(header,sizeof(unsigned char ),54,pfile);
-    for (int i = 0; i < 54; ++i) {
-        printf("%c \n",header[i]);
+
+    if(fread(header,sizeof(unsigned char ),54,pfile) != 54){
+        printf("En-tête BMP invalide...");
+        fclose(filename);
+        return NULL;
     }
     unsigned int width = *(unsigned int*)&header[18];
     unsigned int height = *(unsigned int*)&header[22];
-    unsigned short nombre_bit_couleur = *(unsigned short* )&header[28];
+    unsigned int colorDepth = *(unsigned short* )&header[28];
+    unsigned int dataSize = *(unsigned char *)&header[34];
+    if(colorDepth != 8){
+        printf("Image avec une profondeur différente de 8 bits. Merci de choisir une autre image...");
+        fclose(filename);
+        return NULL;
+    }
 
 }
