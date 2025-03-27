@@ -17,6 +17,11 @@ t_bmp8 * bmp8_loadImage(const char * filename){
     }
     //prototupe de fread -> size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
     fread(header,sizeof(unsigned char ),54,pfile);
+    for (int i = 0; i < 54; ++i) {
+        printf("%c \n",header[i]);
+    }
+    unsigned int width = *(unsigned int*)&header[18];
+    unsigned int height = *(unsigned int*)&header[22];
+    unsigned short nombre_bit_couleur = *(unsigned short* )&header[28];
 
-    unsigned int width = *(unsigned int *)&header[18];
 }
