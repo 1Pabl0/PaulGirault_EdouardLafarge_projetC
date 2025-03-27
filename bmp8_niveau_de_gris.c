@@ -20,3 +20,16 @@ t_bmp8 * bmp8_loadImage(const char * filename){
 
     unsigned int width = *(unsigned int *)&header[18];
 }
+void bmp8_saveImage(const char * filename, t_bmp8 * img){
+    FILE *file = fopen(filename, "wb");
+    if (file == NULL) {
+        printf("Erreur lors de l'ouverture du fichier%s\n",filename);
+        return;
+    }
+    fwrite(img->header, sizeof(unsigned char), 54, file);
+    fwrite(img->data, sizeof(unsigned char), img->width * img->height, file);
+    fclose(file);
+    printf("Image enregistrée avec succès dans %s\n", filename);
+}
+
+
