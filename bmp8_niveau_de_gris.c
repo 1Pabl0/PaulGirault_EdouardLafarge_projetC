@@ -79,8 +79,8 @@ void bmp8_free(t_bmp8 * img){
 }
 void bmp8_printInfo(t_bmp8 * img){
     printf("Informations de l'image : %s\n",image);
-    printf("height = %d\n",img->height);
-    printf("width = %d\n",img->width);
-    printf("colorDepth = %d\n",img->colorDepth);
-    printf("data = %s\n",img->data);
+    printf("height = %d pixels\n",img->height);
+    printf("width = %d pixels\n",img->width);
+    printf("colorDepth = %d bits\n",img->colorDepth);
+    printf("Data size = %d\n",img->dataSize);
 }
