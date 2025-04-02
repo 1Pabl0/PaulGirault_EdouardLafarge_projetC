@@ -15,7 +15,7 @@ t_bmp8 * bmp8_loadImage(const char * filename){
         printf("Lecture impossible du fichier, vérifiez le nom de fichier.\n");
         exit(1);
     }
-    //prototupe de fread -> size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
+    //prototype de fread -> size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
 
     if(fread(header,sizeof(unsigned char ),54,pfile) != 54){
         printf("En-tête BMP invalide...\n");
@@ -42,7 +42,9 @@ t_bmp8 * bmp8_loadImage(const char * filename){
     // Stocker les infos
     img->width = width;
     img->height = height;
+    img->colorDepth = colorDepth;
     img->data = (unsigned char*)malloc(width * height);
+    img->dataSize = width*height;
 
     if (img->data == NULL) {
         printf("Erreur d'allocation mémoire pour les pixels.\n");
@@ -84,3 +86,4 @@ void bmp8_printInfo(t_bmp8 * img){
     printf("colorDepth = %d bits\n",img->colorDepth);
     printf("Data size = %d\n",img->dataSize);
 }
+
