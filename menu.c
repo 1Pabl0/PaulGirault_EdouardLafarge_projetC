@@ -37,6 +37,9 @@ int Menu(){
 
             }
         }
+        else if (nombre == 2){
+            menu_filtres();
+        }
         else if (nombre == 4) {
             if (img != NULL) {
                 bmp8_printInfo(img);  // Affichage des infos de l’image
