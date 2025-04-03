@@ -11,6 +11,7 @@ int Menu(){
         printf("\nVeuillez choisir une option : \n");
         printf("1. Ouvrir une image\n");
         printf("2. Appliquer un filtre\n");
+        printf("3. Sauvegarder une image");
         printf("4. Afficher les informations de l'image\n");
         printf("5. Quitter\n");
         printf("Votre choix -> ");
