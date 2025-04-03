@@ -26,7 +26,7 @@ int Menu(){
             // Chargement de l'image
             char filename[256];
             printf("Entrez le nom du fichier image BMP : ");
-            printf("Mettre le chemin d'accès entier ");
+            printf("Mettre le chemin d'accès entier : ");
             scanf("%s", filename);
 
             img = bmp8_loadImage(filename);  // Chargement de l’image
@@ -55,6 +55,14 @@ int Menu(){
             }
             printf("Au revoir !\n");
             break;
+        }
+        else if (nombre == 3){
+            if (img != NULL) {
+                char filename[256];
+                printf("Mettre le chemin d'accès entier : ");
+                scanf("%s", filename);
+                bmp8_saveImage(filename, img);
+            }
         }
     }
 
