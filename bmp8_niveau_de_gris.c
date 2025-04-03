@@ -87,3 +87,7 @@ void bmp8_printInfo(t_bmp8 * img){
     printf("Data size = %d\n",img->dataSize);
 }
 
+void bmp8_negative(t_bmp8 * img){
+
+}
+
