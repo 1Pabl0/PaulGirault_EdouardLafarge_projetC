@@ -43,8 +43,9 @@ t_bmp8 * bmp8_loadImage(const char * filename){
     img->width = width;
     img->height = height;
     img->colorDepth = colorDepth;
-    img->data = (unsigned char*)malloc(width * height);
     img->dataSize = width*height;
+    img->data = (unsigned char*)malloc(img->dataSize);
+
 
     if (img->data == NULL) {
         printf("Erreur d'allocation mémoire pour les pixels.\n");
@@ -87,7 +88,12 @@ void bmp8_printInfo(t_bmp8 * img){
     printf("Data size = %d\n",img->dataSize);
 }
 
-void bmp8_negative(t_bmp8 * img){
 
+void bmp8_negative(t_bmp8 *img) {
+    if (img == NULL || img->data == NULL) return; // Vérifier que l'image est valide
+
+    unsigned char *ptr = img->data; // Pointeur vers les pixels
+    for (unsigned int i = 0; i < img->width * img->height; i++) {
+        ptr[i] = 255 - ptr[i]; // Inversion de la couleur du pixel
+    }
 }
-
