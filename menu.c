@@ -111,6 +111,9 @@ int menu_filtres(){
             bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
             break;
 
+        case 4:
+
+
     }
     return choix;
 }
