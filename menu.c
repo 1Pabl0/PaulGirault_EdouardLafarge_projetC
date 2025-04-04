@@ -105,12 +105,43 @@ int menu_filtres(){
         case 3:
             img = bmp8_loadImage("../DATA/lena_gray.bmp");
             int treshold;
-            printf("Veuillez rentrer un nombre référence treshold : (faible = 60, moyen = 125, fort = 200)");
+            printf("Veuillez rentrer un nombre référence treshold : (faible = 60, moyen = 128, fort = 200)");
             scanf("%d",&treshold);
             bmp8_threshold(img,treshold);
             bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
             break;
+        case 4:
+            t_bmp8 *img = bmp8_loadImage("../DATA/lena_gray.bmp");  // Charger l’image
+            if (img == NULL) return 1;
 
+            int kernelSize = 3;
+            float **kernel = (float **)malloc(kernelSize * sizeof(float *));
+            for (int i = 0; i < kernelSize; i++) {
+                kernel[i] = (float *)malloc(kernelSize * sizeof(float));
+            }
+
+    // Initialisation du noyau flou box blur (3x3)
+            for (int i = 0; i < kernelSize; i++) {
+                for (int j = 0; j < kernelSize; j++) {
+                    kernel[i][j] = 1.0 / 9;  // Chaque élément a la même valeur
+                }
+            }
+
+    // Appliquer le filtre
+            bmp8_applyFilter(img, kernel, kernelSize);
+
+    // Sauvegarde de l’image modifiée
+            bmp8_saveImage("../DATA/lena_gray_output.bmp", img);
+
+    // Libération de la mémoire
+            for (int i = 0; i < kernelSize; i++) {
+                free(kernel[i]);
+            }
+            free(kernel);
+            bmp8_free(img);
+
+            printf("Filtre appliqué avec succès !\n");
+            break;
     }
     return choix;
 }
