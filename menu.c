@@ -69,6 +69,7 @@ int Menu(){
     return 0;
 }
 int menu_filtres(){
+    t_bmp8 *img = NULL;
     printf("Veuillez choisir un filtre :\n");
     printf("1. Négatif\n"
            "2. Luminosité\n"
@@ -85,6 +86,13 @@ int menu_filtres(){
     while (choix>8 || choix<1){
         printf("Votre choix ->");
     scanf("%d",&choix);
+    }
+    switch (choix) {
+        case 1:
+            img = bmp8_loadImage("/Users/edouardlafarge/PaulGirault_EdouardLafarge_projetC/DATA/lena_gray.bmp");
+            bmp8_negative(img);
+            bmp8_saveImage("/Users/edouardlafarge/PaulGirault_EdouardLafarge_projetC/DATA/lena_gray_output.bmp",img);
+
     }
     return choix;
 }
