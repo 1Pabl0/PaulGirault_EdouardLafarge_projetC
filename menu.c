@@ -89,9 +89,9 @@ int menu_filtres(){
     }
     switch (choix) {
         case 1:
-            img = bmp8_loadImage("/Users/edouardlafarge/PaulGirault_EdouardLafarge_projetC/DATA/lena_gray.bmp");
+            img = bmp8_loadImage("../DATA/lena_gray.bmp");
             bmp8_negative(img);
-            bmp8_saveImage("/Users/edouardlafarge/PaulGirault_EdouardLafarge_projetC/DATA/lena_gray_output.bmp",img);
+            bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
 
     }
     return choix;
