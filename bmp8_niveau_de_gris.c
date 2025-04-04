@@ -9,29 +9,13 @@ char image[] = "DATA/lena_gray.bmp";
 
 // On sait que la largeur de l'image est stockée à l'offset 18 de l'en-tête
 t_bmp8 * bmp8_loadImage(const char * filename){
-    unsigned char header[54];
     FILE *pfile = fopen(filename,"rb");
-    if(pfile== NULL){
+    if(pfile == NULL){
         printf("Lecture impossible du fichier, vérifiez le nom de fichier.\n");
-        exit(1);
-    }
-    //prototype de fread -> size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
-
-    if(fread(header,sizeof(unsigned char ),54,pfile) != 54){
-        printf("En-tête BMP invalide...\n");
-        fclose(pfile);
-        return NULL;
-    }
-    unsigned int width = *(unsigned int*)&header[18];
-    unsigned int height = *(unsigned int*)&header[22];
-    unsigned int colorDepth = *(unsigned short* )&header[28];
-    if(colorDepth != 8){
-        printf("Image avec une profondeur différente de 8 bits. Merci de choisir une autre image...\n");
-        fclose(pfile);
         return NULL;
     }
 
-    // Allouer la structure t_bmp8
+    // Allouer la structure
     t_bmp8 *img = (t_bmp8*)malloc(sizeof(t_bmp8));
     if (img == NULL) {
         printf("Erreur d'allocation mémoire pour l'image.\n");
@@ -39,13 +23,37 @@ t_bmp8 * bmp8_loadImage(const char * filename){
         return NULL;
     }
 
-    // Stocker les infos
-    img->width = width;
-    img->height = height;
-    img->colorDepth = colorDepth;
-    img->dataSize = width*height;
-    img->data = (unsigned char*)malloc(img->dataSize);
+    // Lire l'en-tête BMP
+    if (fread(img->header, sizeof(unsigned char), 54, pfile) != 54) {
+        printf("En-tête BMP invalide...\n");
+        free(img);
+        fclose(pfile);
+        return NULL;
+    }
 
+    // Lire les dimensions et la profondeur des couleurs
+    img->width = *(unsigned int*)&img->header[18];
+    img->height = *(unsigned int*)&img->header[22];
+    img->colorDepth = *(unsigned short*)&img->header[28];
+
+    if (img->colorDepth != 8) {
+        printf("Image avec une profondeur différente de 8 bits. Merci de choisir une autre image...\n");
+        free(img);
+        fclose(pfile);
+        return NULL;
+    }
+
+    // Lire la table des couleurs (1024 octets pour BMP 8 bits)
+    if (fread(img->colorTable, sizeof(unsigned char), 1024, pfile) != 1024) {
+        printf("Erreur lors de la lecture de la table des couleurs.\n");
+        free(img);
+        fclose(pfile);
+        return NULL;
+    }
+
+    // Allouer la mémoire pour les pixels
+    img->dataSize = img->width * img->height;
+    img->data = (unsigned char*)malloc(img->dataSize);
 
     if (img->data == NULL) {
         printf("Erreur d'allocation mémoire pour les pixels.\n");
@@ -54,10 +62,16 @@ t_bmp8 * bmp8_loadImage(const char * filename){
         return NULL;
     }
 
-    // Lire les données d'image
-    fread(img->data, sizeof(unsigned char), width * height, pfile);
-    fclose(pfile);
+    // Lire les pixels
+    if (fread(img->data, sizeof(unsigned char), img->dataSize, pfile) != img->dataSize) {
+        printf("Erreur lors de la lecture des données d'image.\n");
+        free(img->data);
+        free(img);
+        fclose(pfile);
+        return NULL;
+    }
 
+    fclose(pfile);
     return img;
 }
 
@@ -66,11 +80,12 @@ t_bmp8 * bmp8_loadImage(const char * filename){
 void bmp8_saveImage(const char * filename, t_bmp8 * img){
     FILE *file = fopen(filename, "wb");
     if (file == NULL) {
-        printf("Erreur lors de l'ouverture du fichier %s\n",filename);
+        printf("Erreur lors de l'ouverture du fichier %s\n", filename);
         return;
     }
     fwrite(img->header, sizeof(unsigned char), 54, file);
-    fwrite(img->data, sizeof(unsigned char), img->width * img->height, file);
+    fwrite(img->colorTable, sizeof(unsigned char), 1024, file);
+    fwrite(img->data, sizeof(unsigned char), img->dataSize, file);
     fclose(file);
     printf("Image enregistrée avec succès dans %s\n", filename);
 }
@@ -97,3 +112,4 @@ void bmp8_negative(t_bmp8 *img) {
         ptr[i] = 255 - ptr[i]; // Inversion de la couleur du pixel
     }
 }
+
