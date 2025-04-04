@@ -159,3 +159,41 @@ void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize){
 
 }
 
+void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
+    if (img == NULL || img->data == NULL || kernel == NULL) return; // Vérification
+
+    int n = kernelSize / 2;  // Décalage du noyau
+    unsigned char *newData = (unsigned char*)malloc(img->width * img->height); // Image temporaire
+    if (newData == NULL) {
+        printf("Erreur d'allocation mémoire pour l'application du filtre.\n");
+        return;
+    }
+
+    // Parcours de l'image (sans les bords)
+    for (int y = n; y < img->height - n; y++) {
+        for (int x = n; x < img->width - n; x++) {
+            float somme = 0.0;
+
+            // Appliquer la convolution
+            for (int j = -n; j <= n; j++) {
+                for (int i = -n; i <= n; i++) {
+                    int pixel = img->data[(y + j) * img->width + (x + i)]; // Pixel voisin
+                    somme += pixel * kernel[j + n][i + n]; // Produit par l'élément du noyau
+                }
+            }
+
+            // Clamping des valeurs (0 à 255)
+            if (somme < 0) somme = 0;
+            if (somme > 255) somme = 255;
+
+            newData[y * img->width + x] = (unsigned char)somme; // Stockage du résultat
+        }
+    }
+
+    // Mise à jour de l'image
+    for (int i = 0; i < img->width * img->height; i++) {
+        img->data[i] = newData[i];
+    }
+
+    free(newData); // Libération de la mémoire temporaire
+}
