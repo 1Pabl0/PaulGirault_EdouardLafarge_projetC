@@ -100,6 +100,16 @@ int menu_filtres(){
             scanf("%d",&value);
             bmp8_brightness(img,value);
             bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
+            break;
+
+        case 3:
+            img = bmp8_loadImage("../DATA/lena_gray.bmp");
+            int treshold;
+            printf("Veuillez rentrer un nombre référence treshold : ");
+            scanf("%d",&treshold);
+            bmp8_threshold(img,treshold);
+            bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
+            break;
 
     }
     return choix;
