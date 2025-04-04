@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "menu.h"
 #include "bmp8_niveau_de_gris.h"
-
 int Menu(){
     int nombre = 0;
     t_bmp8 *img = NULL;  // Pointeur pour stocker l’image
@@ -91,6 +90,15 @@ int menu_filtres(){
         case 1:
             img = bmp8_loadImage("../DATA/lena_gray.bmp");
             bmp8_negative(img);
+            bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
+            break;
+
+        case 2:
+            img= bmp8_loadImage("../DATA/lena_gray.bmp");
+            int value;
+            printf("de combien voulez vous augmenter la luminosité (-255;255) : ");
+            scanf("%d",&value);
+            bmp8_brightness(img,value);
             bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
 
     }

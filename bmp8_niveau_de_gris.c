@@ -113,3 +113,23 @@ void bmp8_negative(t_bmp8 *img) {
     }
 }
 
+void bmp8_brightness(t_bmp8 * img, int value){
+    if (img == NULL ) {
+        printf("Erreur : Image non chargée ou invalide.\n");
+        return;
+    }
+    for (unsigned int i = 0; i < img->dataSize; i++) {
+        int newValue = img->data[i] + value;
+
+        // Clamp les valeurs pour qu'elles restent entre 0 et 255
+        if (newValue > 255) {
+            img->data[i] = 255;
+        } else if (newValue < 0) {
+            img->data[i] = 0;
+        } else {
+            img->data[i] = (unsigned char)newValue;
+        }
+    }
+}
+
+
