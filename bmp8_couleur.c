@@ -41,11 +41,12 @@ t_bmp24 * bmp24_allocate(int width, int height, int colorDepth) {
     img->width = width;
     img->height = height;
     img->colorDepth = colorDepth;
+    img->data = NULL; // par sécurité
 
     img->data = bmp24_allocateDataPixels(width, height);
     if (img->data == NULL) {
-        free(img);
         printf("Erreur : impossible d'allouer les données pixels.\n");
+        free(img);
         return NULL;
     }
 
@@ -57,9 +58,8 @@ void bmp24_free(t_bmp24 *img) {
     bmp24_freeDataPixels(img->data, img->height);
     free(img);
 }
-t_bmp24 *img = bmp24_allocate(800, 600, 24);
-// ... traitement de l'image ...
-bmp24_free(img);
+
+
 
 
 t_bmp24 * bmp24_loadImage(const char * filename) {
