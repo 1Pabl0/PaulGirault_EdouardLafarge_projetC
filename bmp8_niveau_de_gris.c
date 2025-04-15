@@ -1,6 +1,7 @@
 #include "bmp8_niveau_de_gris.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 char image[] = "DATA/lena_gray.bmp";
 
@@ -148,22 +149,14 @@ void bmp8_threshold(t_bmp8 * img, int threshold){
     }
 }
 
-void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize){
-    if (img == NULL || img->data == NULL){
-        printf("imlage invalide");
-        return;
-    }
-    int width = img->width;
-    int height = img->height;
-    int offset = kernelSize / 2;
-
+void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
+    if (img == NULL || img->data == NULL || kernel == NULL){
+        printf("Image invalide");
+    return;
 }
 
-void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
-    if (img == NULL || img->data == NULL || kernel == NULL) return; // Vérification
-
     int n = kernelSize / 2;  // Décalage du noyau
-    unsigned char *newData = (unsigned char*)malloc(img->width * img->height); // Image temporaire
+    unsigned char *newData = (unsigned char *) malloc(img->width * img->height); // Image temporaire
     if (newData == NULL) {
         printf("Erreur d'allocation mémoire pour l'application du filtre.\n");
         return;
@@ -186,17 +179,20 @@ void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
             if (somme < 0) somme = 0;
             if (somme > 255) somme = 255;
 
-            newData[y * img->width + x] = (unsigned char)somme; // Stockage du résultat
+            newData[y * img->width + x] = (unsigned char) somme; // Stockage du résultat
         }
     }
 
-    // Mise à jour de l'image
     for (int i = 0; i < img->width * img->height; i++) {
         img->data[i] = newData[i];
     }
 
-    free(newData); // Libération de la mémoire temporaire
+    free(newData);
+
+
 }
+
+
 
 void bmp8_filterEmboss(t_bmp8 * img) {
     float embossKernel[3][3] = {

@@ -84,7 +84,7 @@ int menu_filtres(){
     scanf("%d",&choix);
     while (choix>8 || choix<1){
         printf("Votre choix ->");
-    scanf("%d",&choix);
+        scanf("%d",&choix);
     }
     switch (choix) {
         case 1:
@@ -120,7 +120,7 @@ int menu_filtres(){
                 kernel[i] = (float *)malloc(kernelSize * sizeof(float));
             }
 
-    // Initialisation du noyau flou box blur (3x3)
+            // Initialisation du noyau flou box blur (3x3)
             for (int i = 0; i < kernelSize; i++) {
                 for (int j = 0; j < kernelSize; j++) {
                     kernel[i][j] = 1.0 / 9;  // Chaque élément a la même valeur
@@ -128,18 +128,19 @@ int menu_filtres(){
             }
 
 
-    // Appliquer le filtre
+            // Appliquer le filtre
             bmp8_applyFilter(img, kernel, kernelSize);
 
-    // Sauvegarde de l’image modifiée
+            // Sauvegarde de l’image modifiée
             bmp8_saveImage("../DATA/lena_gray_output.bmp", img);
 
-    // Libération de la mémoire
+            // Libération de la mémoire
             for (int i = 0; i < kernelSize; i++) {
                 free(kernel[i]);
             }
             free(kernel);
             bmp8_free(img);
+
 
             printf("Filtre appliqué avec succès !\n");
             break;
