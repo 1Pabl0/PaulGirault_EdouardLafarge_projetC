@@ -28,7 +28,7 @@ int Menu(){
             printf("Mettre le chemin d'accès entier : ");
             scanf("%s", filename);
 
-            img = bmp8_loadImage(filename);  // Chargement de l’image
+            img = bmp8_loadImage(filename);
             if (img != NULL) {
                 printf("Image chargée avec succès !\n");
             } else {
@@ -83,7 +83,7 @@ int menu_filtres(){
     int choix = 0;
     scanf("%d",&choix);
     while (choix>8 || choix<1){
-        printf("Votre choix ->");
+        printf("Votre choix -> ");
         scanf("%d",&choix);
     }
     switch (choix) {
@@ -111,9 +111,8 @@ int menu_filtres(){
             bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
             break;
         case 4:
-            t_bmp8 *img = bmp8_loadImage("../DATA/lena_gray.bmp");  // Charger l’image
+            img = bmp8_loadImage("../DATA/lena_gray.bmp");  // Charger l’image
             if (img == NULL) return 1;
-
             int kernelSize = 3;
             float **kernel = (float **)malloc(kernelSize * sizeof(float *));
             for (int i = 0; i < kernelSize; i++) {
@@ -126,6 +125,28 @@ int menu_filtres(){
                     kernel[i][j] = 1.0 / 9;  // Chaque élément a la même valeur
                 }
             }
+            bmp8_applyFilter(img,kernel,kernelSize);
+            bmp8_saveImage("../DATA/lena_gray_output.bmp",img);
+            break;
+
+        case 5:
+            printf("");
+            img = bmp8_loadImage("../DATA/lena_gray.bmp");
+            bmp8_filterEmboss(img);
+            bmp8_saveImage("../DATA/lena_gray_output.bmp", img);
+            bmp8_free(img);
+            printf("Filtre appliqué avec succès !\n");
+            break;
+
+        case 6:
+            img = bmp8_loadImage("../DATA/lena_gray.bmp");
+            bmp8_filterOutline(img);
+            bmp8_saveImage("../DATA/lena_gray_output.bmp", img);
+            bmp8_free(img);
+            printf("Filtre appliqué avec succès !\n");
+            break;
+
+
 
 
             // Appliquer le filtre

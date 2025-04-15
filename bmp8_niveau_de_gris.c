@@ -235,3 +235,25 @@ void bmp8_filterSharpen(t_bmp8 * img) {
     for (int i = 0; i < 3; i++) free(kernel[i]);
     free(kernel);
 }
+
+void bmp8_filterOutline(t_bmp8 * img) {
+    float outlineKernel[3][3] = {
+            { -1, -1, -1 },
+            { -1,  8, -1 },
+            { -1, -1, -1 }
+    };
+
+    // Allocation du kernel dynamique
+    float **kernel = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        kernel[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            kernel[i][j] = outlineKernel[i][j];
+        }
+    }
+
+    bmp8_applyFilter(img, kernel, 3);
+
+    for (int i = 0; i < 3; i++) free(kernel[i]);
+    free(kernel);
+}
