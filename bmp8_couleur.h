@@ -1,6 +1,9 @@
 #ifndef PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
 #define PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 // Constantes pour les offsets des champs de l'en-tête BMP
 #define BITMAP_MAGIC 0x00 // offset 0
 #define BITMAP_SIZE 0x02 // offset 2
