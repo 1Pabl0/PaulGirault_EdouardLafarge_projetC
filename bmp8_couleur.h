@@ -68,4 +68,11 @@ void bmp24_free (t_bmp24 * img);
 t_bmp24 * bmp24_loadImage (const char * filename);
 void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
+
+t_bmp24 * bmp24_loadImage (const char * filename);
+
+void bmp24_saveImage (t_bmp24 * img, const char * filename);
+
+
+
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
