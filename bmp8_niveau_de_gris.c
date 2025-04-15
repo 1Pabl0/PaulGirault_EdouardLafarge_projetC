@@ -197,3 +197,45 @@ void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
 
     free(newData); // Libération de la mémoire temporaire
 }
+
+void bmp8_filterEmboss(t_bmp8 * img) {
+    float embossKernel[3][3] = {
+        { -2, -1,  0 },
+        { -1,  1,  1 },
+        {  0,  1,  2 }
+    };
+
+    float **kernel = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        kernel[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            kernel[i][j] = embossKernel[i][j];
+        }
+    }
+
+    bmp8_applyFilter(img, kernel, 3);
+
+    for (int i = 0; i < 3; i++) free(kernel[i]);
+    free(kernel);
+}
+
+void bmp8_filterSharpen(t_bmp8 * img) {
+    float sharpenKernel[3][3] = {
+        {  0, -1,  0 },
+        { -1,  5, -1 },
+        {  0, -1,  0 }
+    };
+
+    float **kernel = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        kernel[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            kernel[i][j] = sharpenKernel[i][j];
+        }
+    }
+
+    bmp8_applyFilter(img, kernel, 3);
+
+    for (int i = 0; i < 3; i++) free(kernel[i]);
+    free(kernel);
+}

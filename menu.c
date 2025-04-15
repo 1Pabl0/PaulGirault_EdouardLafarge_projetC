@@ -127,6 +127,7 @@ int menu_filtres(){
                 }
             }
 
+
     // Appliquer le filtre
             bmp8_applyFilter(img, kernel, kernelSize);
 
@@ -142,6 +143,16 @@ int menu_filtres(){
 
             printf("Filtre appliqué avec succès !\n");
             break;
+        case 7:
+            printf("");
+        img = bmp8_loadImage("../DATA/lena_gray.bmp");
+        bmp8_filterSharpen(img);
+        bmp8_saveImage("../DATA/lena_gray_output.bmp", img);
+        bmp8_free(img);
+        printf("Filtre appliqué avec succès !\n");
+        break;
+
+
     }
     return choix;
 }
