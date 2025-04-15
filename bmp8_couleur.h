@@ -26,6 +26,11 @@ typedef struct {
     uint32_t importantcolors;
 } t_bmp_info;
 
+typedef struct {
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+} t_pixel;
 
 typedef struct {
     t_bmp_header header;
