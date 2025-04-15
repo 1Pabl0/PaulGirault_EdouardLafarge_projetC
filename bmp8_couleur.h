@@ -62,6 +62,7 @@ t_pixel ** bmp24_allocateDataPixels (int width, int height);
 void bmp24_freeDataPixels (t_pixel ** pixels, int height);
 t_bmp24 * bmp24_allocate (int width, int height, int colorDepth);
 void bmp24_free (t_bmp24 * img);
-
+t_bmp24 * bmp24_loadImage (const char * filename);
+void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
