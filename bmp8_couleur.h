@@ -95,5 +95,12 @@ void bmp24_saveImage (t_bmp24 * img, const char * filename);
 */
 void file_rawRead(uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
 void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
+//Fonctions de filtres
+
+
+void bmp24_negative (t_bmp24 * img);
+void bmp24_grayscale (t_bmp24 * img);
+void bmp24_brightness (t_bmp24 * img, int value);
+
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H

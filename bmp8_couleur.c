@@ -128,3 +128,27 @@ t_bmp24 * bmp24_loadImage(const char * filename) {
     fclose(file);
     return image;
 }
+void bmp24_negative(t_bmp24 *img) {
+    if (!img || !img->data) return;
+
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            t_pixel *p = &img->data[i][j];
+            p->red   = 255 - p->red;
+            p->green = 255 - p->green;
+            p->blue  = 255 - p->blue;
+        }
+    }
+}
+void bmp24_grayscale(t_bmp24 *img) {
+    if (!img || !img->data) return;
+
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            t_pixel *p = &img->data[i][j];
+            uint8_t average = (p->red + p->green + p->blue) / 3;
+            p->red = p->green = p->blue = average;
+        }
+    }
+}
+
