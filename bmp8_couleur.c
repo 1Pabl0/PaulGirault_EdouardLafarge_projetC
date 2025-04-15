@@ -152,3 +152,163 @@ void bmp24_grayscale(t_bmp24 *img) {
     }
 }
 
+
+void bmp24_brightness (t_bmp24 * img, int value) {
+    if (!img || !img->data) return;
+    printf("De combien voulez vous augmenter/baisser la luminosité de l'image : ");
+    scanf("%d", &value);
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            t_pixel *p = &img->data[i][j];
+            p->red   = value + p->red;
+            p->green = value + p->green;
+            p->blue  = value + p->blue;
+                if (p->red > 255 ){
+                    p->red   = 255;
+                    if(p->blue > 255){
+                    p->blue=255;
+                    if(p->green>255){
+                     p->green=255;
+                        }
+             }
+            }
+        }
+    }
+}
+
+
+t_pixel bmp24_convolution(t_bmp24 *img, int x, int y, float **kernel, int kernelSize) {
+    int half = kernelSize / 2;
+    float red = 0, green = 0, blue = 0;
+
+    for (int i = -half; i <= half; i++) {
+        for (int j = -half; j <= half; j++) {
+            int px = x + j;
+            int py = y + i;
+
+            // Gestion des bords : on ignore les pixels hors image
+            if (px >= 0 && px < img->width && py >= 0 && py < img->height) {
+                t_pixel p = img->data[py][px];
+                float coeff = kernel[i + half][j + half];
+                red   += p.red * coeff;
+                green += p.green * coeff;
+                blue  += p.blue * coeff;
+            }
+        }
+    }
+
+    // Clamp les valeurs entre 0 et 255
+    t_pixel result;
+    result.red = (uint8_t) fmin(fmax(red, 0), 255);
+    result.green = (uint8_t) fmin(fmax(green, 0), 255);
+    result.blue = (uint8_t) fmin(fmax(blue, 0), 255);
+    return result;
+}
+t_bmp24 *bmp24_applyFilter(t_bmp24 *img, float **kernel, int kernelSize) {
+    t_bmp24 *output = bmp24_allocate(img->width, img->height, img->colorDepth);
+    if (!output) return NULL;
+
+    output->header = img->header;
+    output->header_info = img->header_info;
+
+    for (int y = 0; y < img->height; y++) {
+        for (int x = 0; x < img->width; x++) {
+            output->data[y][x] = bmp24_convolution(img, x, y, kernel, kernelSize);
+        }
+    }
+
+    return output;
+}
+
+
+float **boxBlurKernel() {
+    float **k = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        k[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            k[i][j] = 1.0f / 9.0f;
+        }
+    }
+    return k;
+}
+
+
+float **gaussianBlurKernel() {
+    float values[3][3] = {
+            {1, 2, 1},
+            {2, 4, 2},
+            {1, 2, 1}
+    };
+    float **k = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        k[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            k[i][j] = values[i][j] / 16.0f;
+        }
+    }
+    return k;
+}
+
+
+float **outlineKernel() {
+    float values[3][3] = {
+            {-1, -1, -1},
+            {-1,  8, -1},
+            {-1, -1, -1}
+    };
+    float **k = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        k[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            k[i][j] = values[i][j];
+        }
+    }
+    return k;
+}
+
+
+float **embossKernel() {
+    float values[3][3] = {
+            {-2, -1,  0},
+            {-1,  1,  1},
+            { 0,  1,  2}
+    };
+    float **k = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        k[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            k[i][j] = values[i][j];
+        }
+    }
+    return k;
+}
+
+
+
+float **sharpenKernel() {
+    float values[3][3] = {
+            { 0, -1,  0},
+            {-1,  5, -1},
+            { 0, -1,  0}
+    };
+    float **k = malloc(3 * sizeof(float*));
+    for (int i = 0; i < 3; i++) {
+        k[i] = malloc(3 * sizeof(float));
+        for (int j = 0; j < 3; j++) {
+            k[i][j] = values[i][j];
+        }
+    }
+    return k;
+}
+/*
+ * Pour appeler la fonction et la libérer
+ * t_bmp24 *blurred = bmp24_gaussianBlur(img);
+
+// 3. Sauvegarder l'image modifiée
+bmp24_saveImage(blurred, "output_gaussian.bmp");
+
+// 4. Libérer la mémoire
+bmp24_free(img);
+bmp24_free(blurred);
+}
+*/
