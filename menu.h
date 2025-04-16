@@ -3,6 +3,6 @@
 
 int Menu();
 int menu_filtres();
-
+int menu_filtres_couleur();
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_MENU_H

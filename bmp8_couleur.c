@@ -312,3 +312,34 @@ bmp24_free(img);
 bmp24_free(blurred);
 }
 */
+void bmp24_saveImage(t_bmp24 *img, const char *filename) {
+    FILE *file = fopen(filename, "wb");
+    if (!file) {
+        perror("Erreur ouverture fichier écriture");
+        return;
+    }
+
+    fwrite(&img->header, sizeof(t_bmp_header), 1, file);
+    fwrite(&img->header_info, sizeof(t_bmp_info), 1, file);
+
+    int width = img->width;
+    int height = img->height;
+    int padding = (4 - (width * 3) % 4) % 4;
+    uint8_t pad[3] = {0, 0, 0};
+
+    fseek(file, img->header.offset, SEEK_SET);
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            uint8_t bgr[3] = {
+                img->data[height - 1 - i][j].blue,
+                img->data[height - 1 - i][j].green,
+                img->data[height - 1 - i][j].red
+            };
+            fwrite(bgr, sizeof(uint8_t), 3, file);
+        }
+        fwrite(pad, sizeof(uint8_t), padding, file);
+    }
+
+    fclose(file);
+}

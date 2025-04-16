@@ -103,4 +103,11 @@ void bmp24_grayscale (t_bmp24 * img);
 void bmp24_brightness (t_bmp24 * img, int value);
 void bmp24_brightness (t_bmp24 * img, int value);
 t_pixel bmp24_convolution (t_bmp24 * img, int x, int y, float ** kernel, int kernelSize);
+float **sharpenKernel();
+float **embossKernel();
+float **outlineKernel();
+float **gaussianBlurKernel();
+float **boxBlurKernel();
+t_bmp24 *bmp24_applyFilter(t_bmp24 *img, float **kernel, int kernelSize);
+
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
