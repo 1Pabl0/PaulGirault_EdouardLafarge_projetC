@@ -1,4 +1,7 @@
 #include "bmp8_couleur.h"
+
+char image[] = "DATA/lena_color.bmp";
+
 void bmp24_printInfo(t_bmp24 *img) {
     if (!img) {
         printf("Aucune image fournie.\n");
@@ -83,64 +86,77 @@ void file_rawRead(uint32_t position, void * buffer, uint32_t size, size_t n, FIL
 }
 
 // 🔸 Chargement complet de l’image 24 bits
-t_bmp24 * bmp24_loadImage(const char * filename) {
-    FILE *file = fopen(filename, "rb");
-    if (!file) {
-        perror("Erreur ouverture fichier");
+t_bmp24 * bmp24_loadImage(const char *filename) {
+    FILE *pfile = fopen(filename, "rb");
+    if (pfile == NULL) {
+        printf("Lecture impossible du fichier, vérifiez le nom de fichier.\n");
         return NULL;
     }
 
-    // Lecture de l'en-tête BMP
-    t_bmp_header header;
-    file_rawRead(BITMAP_MAGIC, &header, sizeof(t_bmp_header), 1, file);
-
-    if (header.type != BMP_TYPE) {
-        fprintf(stderr, "Erreur : ce n'est pas un fichier BMP valide.\n");
-        fclose(file);
+    // Allouer la structure image
+    t_bmp24 *img = (t_bmp24 *)malloc(sizeof(t_bmp24));
+    if (img == NULL) {
+        printf("Erreur d'allocation mémoire pour l'image.\n");
+        fclose(pfile);
         return NULL;
     }
 
-    // Lecture du DIB header
-    t_bmp_info header_info;
-    file_rawRead(BITMAP_WIDTH, &header_info, sizeof(t_bmp_info), 1, file);
+    // Lire les structures d'en-tête
+    fread(&img->header, sizeof(t_bmp_header), 1, pfile);
+    fread(&img->header_info, sizeof(t_bmp_info), 1, pfile);
 
-    if (header_info.bits != DEFAULT_DEPTH) {
-        fprintf(stderr, "Erreur : ce programme ne gère que les images 24 bits.(bits détectés = %d).\n", header_info.bits);
-        fclose(file);
+    img->width = img->header_info.width;
+    img->height = img->header_info.height;
+    img->colorDepth = img->header_info.bits;
+
+    if (img->colorDepth != 24) {
+        printf("Image avec une profondeur différente de 24 bits. Merci de choisir une autre image...\n");
+        free(img);
+        fclose(pfile);
         return NULL;
     }
 
-    // Allocation mémoire pour l’image
-    t_bmp24 *image = bmp24_allocate(header_info.width, header_info.height, header_info.bits);
-    if (!image) {
-        fclose(file);
+    // Padding
+    int padding = (4 - (img->width * 3) % 4) % 4;
+
+    // Allocation des pixels
+    img->data = malloc(img->height * sizeof(t_pixel *));
+    if (!img->data) {
+        printf("Erreur allocation mémoire data.\n");
+        free(img);
+        fclose(pfile);
         return NULL;
     }
 
-    image->header = header;
-    image->header_info = header_info;
-
-    int width = image->width;
-    int height = image->height;
-    int padding = (4 - (width * 3) % 4) % 4;
-
-    fseek(file, header.offset, SEEK_SET);
-
-    // Lecture directe des pixels (ligne par ligne, du bas vers le haut)
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            uint8_t bgr[3];
-            fread(bgr, sizeof(uint8_t), 3, file);
-            image->data[height - 1 - i][j].blue  = bgr[0];
-            image->data[height - 1 - i][j].green = bgr[1];
-            image->data[height - 1 - i][j].red   = bgr[2];
+    for (int i = 0; i < img->height; i++) {
+        img->data[i] = malloc(img->width * sizeof(t_pixel));
+        if (!img->data[i]) {
+            for (int k = 0; k < i; k++) free(img->data[k]);
+            free(img->data);
+            free(img);
+            fclose(pfile);
+            return NULL;
         }
-        fseek(file, padding, SEEK_CUR);
     }
 
-    fclose(file);
-    return image;
+    // Positionner le curseur sur le début des données d'image
+    fseek(pfile, img->header.offset, SEEK_SET);
+
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            uint8_t bgr[3];
+            fread(bgr, sizeof(uint8_t), 3, pfile);
+            img->data[img->height - 1 - i][j].blue  = bgr[0];
+            img->data[img->height - 1 - i][j].green = bgr[1];
+            img->data[img->height - 1 - i][j].red   = bgr[2];
+        }
+        fseek(pfile, padding, SEEK_CUR);
+    }
+
+    fclose(pfile);
+    return img;
 }
+
 void bmp24_negative(t_bmp24 *img) {
     if (!img || !img->data) return;
 

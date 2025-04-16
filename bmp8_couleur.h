@@ -59,6 +59,10 @@ typedef struct {
     int colorDepth;
     t_pixel **data;
 } t_bmp24;
+
+
+
+
 void bmp24_printInfo(t_bmp24 *img);
 t_pixel ** bmp24_allocateDataPixels (int width, int height);
 void bmp24_freeDataPixels (t_pixel ** pixels, int height);
