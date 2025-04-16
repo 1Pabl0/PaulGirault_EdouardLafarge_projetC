@@ -1,6 +1,6 @@
 #include "bmp8_couleur.h"
 
-char image[] = "DATA/lena_color.bmp";
+char image_c[] = "DATA/lena_color.bmp";
 
 void bmp24_printInfo(t_bmp24 *img) {
     if (!img) {
