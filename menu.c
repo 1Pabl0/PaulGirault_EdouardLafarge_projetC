@@ -304,7 +304,7 @@ int menu_filtres_couleur() {
             printf("Retour au menu principal...\n");
             break;
         case 17:
-            img = bmp24_loadImage(input);
+            img = bmp24_loadImage("../DATA/lena_color.bmp");
         if (img != NULL) {
             bmp24_printInfo(img);
             bmp24_free(img);
