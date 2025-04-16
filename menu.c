@@ -88,7 +88,7 @@ int menu_filtres(){
 
 
 
-            // Appliquer le filtre
+
             bmp8_applyFilter(img, kernel, kernelSize);
 
             // Sauvegarde de l’image modifiée
@@ -199,6 +199,7 @@ int menu_filtres_couleur() {
     printf("14. Contours\n");
     printf("15. Relief (Emboss)\n");
     printf("16. Retour au menu principal\n");
+    printf("17. INFOS IMAGE TEST\n");
     printf("Votre choix -> ");
 
     int choix;

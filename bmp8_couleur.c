@@ -85,62 +85,60 @@ void file_rawRead(uint32_t position, void * buffer, uint32_t size, size_t n, FIL
     fread(buffer, size, n, file);
 }
 
-// 🔸 Chargement complet de l’image 24 bits
-t_bmp24 * bmp24_loadImage(const char *filename) {
+t_bmp24 * bmp24_loadImage(const char * filename){
     FILE *pfile = fopen(filename, "rb");
-    if (pfile == NULL) {
+    if(pfile == NULL){
         printf("Lecture impossible du fichier, vérifiez le nom de fichier.\n");
         return NULL;
     }
 
-    // Allouer la structure image
-    t_bmp24 *img = (t_bmp24 *)malloc(sizeof(t_bmp24));
+    t_bmp24 *img = (t_bmp24*)malloc(sizeof(t_bmp24));
     if (img == NULL) {
         printf("Erreur d'allocation mémoire pour l'image.\n");
         fclose(pfile);
         return NULL;
     }
 
-    // Lire les structures d'en-tête
-    fread(&img->header, sizeof(t_bmp_header), 1, pfile);
-    fread(&img->header_info, sizeof(t_bmp_info), 1, pfile);
-
-    img->width = img->header_info.width;
-    img->height = img->header_info.height;
-    img->colorDepth = img->header_info.bits;
-
-    if (img->colorDepth != 24) {
-        printf("Image avec une profondeur différente de 24 bits. Merci de choisir une autre image...\n");
+    unsigned char header[HEADER_SIZE + INFO_SIZE]; // 54 octets
+    if (fread(header, sizeof(unsigned char), HEADER_SIZE + INFO_SIZE, pfile) != (HEADER_SIZE + INFO_SIZE)) {
+        printf("En-tête BMP invalide...\n");
         free(img);
         fclose(pfile);
         return NULL;
     }
 
-    // Padding
+    // Vérification du type BMP
+    if (*(unsigned short*)&header[BITMAP_MAGIC] != BMP_TYPE) {
+        printf("Ce fichier n'est pas un BMP valide (signature incorrecte).\n");
+        free(img);
+        fclose(pfile);
+        return NULL;
+    }
+
+    // Extraction des données de l'en-tête
+    img->width = *(int*)&header[BITMAP_WIDTH];
+    img->height = *(int*)&header[BITMAP_HEIGHT];
+    img->colorDepth = *(short*)&header[BITMAP_DEPTH];
+    int offset = *(int*)&header[BITMAP_OFFSET];
+
+    if (img->colorDepth != DEFAULT_DEPTH) {
+        printf("Image avec une profondeur de couleur différente de 24 bits. Merci de choisir une autre image...\n");
+        free(img);
+        fclose(pfile);
+        return NULL;
+    }
+
     int padding = (4 - (img->width * 3) % 4) % 4;
 
-    // Allocation des pixels
-    img->data = malloc(img->height * sizeof(t_pixel *));
-    if (!img->data) {
-        printf("Erreur allocation mémoire data.\n");
+    img->data = bmp24_allocateDataPixels(img->width, img->height);
+    if (img->data == NULL) {
+        printf("Erreur d'allocation mémoire pour les pixels.\n");
         free(img);
         fclose(pfile);
         return NULL;
     }
 
-    for (int i = 0; i < img->height; i++) {
-        img->data[i] = malloc(img->width * sizeof(t_pixel));
-        if (!img->data[i]) {
-            for (int k = 0; k < i; k++) free(img->data[k]);
-            free(img->data);
-            free(img);
-            fclose(pfile);
-            return NULL;
-        }
-    }
-
-    // Positionner le curseur sur le début des données d'image
-    fseek(pfile, img->header.offset, SEEK_SET);
+    fseek(pfile, offset, SEEK_SET);
 
     for (int i = 0; i < img->height; i++) {
         for (int j = 0; j < img->width; j++) {
