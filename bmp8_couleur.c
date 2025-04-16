@@ -92,7 +92,7 @@ t_bmp24 * bmp24_loadImage(const char * filename) {
     file_rawRead(BITMAP_WIDTH, &header_info, sizeof(t_bmp_info), 1, file);
 
     if (header_info.bits != DEFAULT_DEPTH) {
-        fprintf(stderr, "Erreur : ce programme ne gère que les images 24 bits.\n");
+        fprintf(stderr, "Erreur : ce programme ne gère que les images 24 bits.(bits détectés = %d).\n", header_info.bits);
         fclose(file);
         return NULL;
     }
