@@ -1,5 +1,18 @@
 #include "bmp8_couleur.h"
+void bmp24_printInfo(t_bmp24 *img) {
+    if (!img) {
+        printf("Aucune image fournie.\n");
+        return;
+    }
 
+    printf("\n🔍 Informations de l'image BMP 24 bits :\n");
+    printf("➡️  Dimensions      : %d x %d pixels\n", img->width, img->height);
+    printf("🎨 Profondeur      : %d bits\n", img->colorDepth);
+    printf("📦 Taille image RAW: %u octets\n", img->header_info.imagesize);
+    printf("📁 Offset des données : %u (octet %d)\n", img->header.offset, BITMAP_OFFSET);
+    printf("🖼️ Compression      : %u\n", img->header_info.compression);
+    printf("🖨️ Résolution       : %d x %d dpi\n", img->header_info.xresolution, img->header_info.yresolution);
+}
 // 🔸 Allocation d'une matrice de pixels
 t_pixel ** bmp24_allocateDataPixels(int width, int height) {
     t_pixel **pixels = (t_pixel **)malloc(height * sizeof(t_pixel *));

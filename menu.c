@@ -204,7 +204,7 @@ int menu_filtres_couleur() {
     int choix;
     scanf("%d", &choix);
 
-    while (choix < 8 || choix > 16) {
+    while (choix < 8 || choix > 17) {
         printf("Choix invalide. Réessayez : ");
         scanf("%d", &choix);
     }
@@ -303,6 +303,16 @@ int menu_filtres_couleur() {
         case 16:
             printf("Retour au menu principal...\n");
             break;
+        case 17:
+            img = bmp24_loadImage(input);
+        if (img != NULL) {
+            bmp24_printInfo(img);
+            bmp24_free(img);
+        } else {
+            printf("Erreur : Impossible de charger l’image pour affichage des infos.\n");
+        }
+        break;
+
     }
     return choix;
 }
