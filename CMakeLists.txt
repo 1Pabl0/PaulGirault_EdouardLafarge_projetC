@@ -8,5 +8,5 @@ add_executable(PaulGirault_EdouardLafarge_projetC main.c
         bmp8_niveau_de_gris.h
         menu.c
         menu.h
-        bmp8_couleur.c
-        bmp8_couleur.h)
+        bmp24.c
+        bmp24.h)

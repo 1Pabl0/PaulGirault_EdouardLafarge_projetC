@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include "menu.h"
 #include "bmp8_niveau_de_gris.h"
-#include "bmp8_couleur.h"
+#include "bmp24.h"
 void menu_filtres_couleur_complet() {
     int choix;
     t_bmp24 *img = NULL;
 
-    const char *input = "../DATA/lena_color.bmp";
-    const char *output = "../DATA/lena_color_output.bmp";
+    const char *input = "/DATA/lena_color.bmp";
+    const char *output = "/DATA/lena_color_output.bmp";
 
     while (1) {
         printf("\n🎨 Menu des filtres pour image couleur :\n");
@@ -304,7 +304,7 @@ int menu_principal() {
 
     while (1) {
         printf("\n==============================\n");
-        printf("🎉 Bienvenue dans le programme de traitement d'image 🎉\n");
+        printf("🎉 Bienvenue dans le programme \n de traitement d'image 🎉\n");
         printf("==============================\n");
         printf("1. 📷 Image en noir et blanc\n");
         printf("2. 🌈 Image en couleur\n");
