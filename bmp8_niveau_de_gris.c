@@ -4,7 +4,6 @@
 #include <math.h>
 
 char image[] = "DATA/lena_gray.bmp";
-
 // En supposant que le fichier image BMP est ouvert et
 // que l'en-tête est stocké dans le tableau header
 
