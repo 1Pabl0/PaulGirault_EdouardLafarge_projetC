@@ -113,6 +113,8 @@ t_bmp24 * bmp24_loadImage(const char *filename) {
     file_rawRead(BITMAP_MAGIC, &header, sizeof(t_bmp_header), 1, file);
     file_rawRead(HEADER_SIZE, &header_info, sizeof(t_bmp_info), 1, file);
 
+
+
     // Vérification de la profondeur
     if (header_info.bits != DEFAULT_DEPTH) {
         printf("Erreur : profondeur différente de 24 bits (%d lue).\n", header_info.bits);
@@ -130,6 +132,8 @@ t_bmp24 * bmp24_loadImage(const char *filename) {
     // Copier les headers dans la structure
     img->header = header;
     img->header_info = header_info;
+    printf("Offset lu : %u\n", header.offset);
+
 
     // Lire les pixels
     bmp24_readPixelData(file, img);
@@ -337,7 +341,10 @@ void bmp24_saveImage(t_bmp24 *img, const char *filename) {
 
     // ✅ Mise à jour des métadonnées BMP
     img->header.offset = sizeof(t_bmp_header) + sizeof(t_bmp_info);
+
     img->header.size = img->header.offset + rowSize * height;
+
+
 
     fwrite(&img->header, sizeof(t_bmp_header), 1, file);
     fwrite(&img->header_info, sizeof(t_bmp_info), 1, file);

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#pragma pack(push, 1) // évite le padding
 // Constantes pour les offsets des champs de l'en-tête BMP
 #define BITMAP_MAGIC 0x00 // offset 0
 #define BITMAP_SIZE 0x02 // offset 2
@@ -113,3 +114,4 @@ float **boxBlurKernel();
 t_bmp24 *bmp24_applyFilter(t_bmp24 *img, float **kernel, int kernelSize);
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP24_H
+#pragma pack(pop)
