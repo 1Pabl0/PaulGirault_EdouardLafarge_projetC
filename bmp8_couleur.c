@@ -323,33 +323,69 @@ bmp24_free(blurred);
 }
 */
 void bmp24_saveImage(t_bmp24 *img, const char *filename) {
+    // Corriger tous les champs avant d’écrire
+    int padding = (4 - (img->width * 3) % 4) % 4; // alignement par ligne à 4 octets
+    int rowSize = img->width * 3 + padding;
+
+    img->header.type = BMP_TYPE;
+    img->header.offset = HEADER_SIZE + INFO_SIZE; // 14 + 40 = 54 octets
+    img->header.size = img->header.offset + rowSize * img->height;
+    img->header.reserved1 = 0;
+    img->header.reserved2 = 0;
+
+    img->header_info.size = INFO_SIZE;
+    img->header_info.width = img->width;
+    img->header_info.height = img->height;
+    img->header_info.planes = 1;
+    img->header_info.bits = 24;
+    img->header_info.compression = 0;
+    img->header_info.imagesize = rowSize * img->height;
+    img->header_info.xresolution = 2835; // 72 DPI
+    img->header_info.yresolution = 2835;
+    img->header_info.ncolors = 0;
+    img->header_info.importantcolors = 0;
+
+    // Sauvegarde de l'image
     FILE *file = fopen(filename, "wb");
     if (!file) {
-        perror("Erreur ouverture fichier écriture");
+        printf("Erreur : impossible d’ouvrir le fichier %s en écriture.\n", filename);
         return;
     }
 
-    fwrite(&img->header, sizeof(t_bmp_header), 1, file);
+    // Écriture du header fichier (14 octets)
+    fwrite(&img->header.type, sizeof(uint16_t), 1, file);
+    fwrite(&img->header.size, sizeof(uint32_t), 1, file);
+    fwrite(&img->header.reserved1, sizeof(uint16_t), 1, file);
+    fwrite(&img->header.reserved2, sizeof(uint16_t), 1, file);
+    fwrite(&img->header.offset, sizeof(uint32_t), 1, file);
+
+    // Écriture du header info (40 octets)
     fwrite(&img->header_info, sizeof(t_bmp_info), 1, file);
 
-    int width = img->width;
-    int height = img->height;
-    int padding = (4 - (width * 3) % 4) % 4;
-    uint8_t pad[3] = {0, 0, 0};
-
-    fseek(file, img->header.offset, SEEK_SET);
-
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            uint8_t bgr[3] = {
-                img->data[height - 1 - i][j].blue,
-                img->data[height - 1 - i][j].green,
-                img->data[height - 1 - i][j].red
-            };
-            fwrite(bgr, sizeof(uint8_t), 3, file);
+    // Écriture des pixels ligne par ligne (avec padding)
+    uint8_t pad[3] = {0, 0, 0}; // maximum 3 octets de padding
+    for (int i = img->height - 1; i >= 0; i--) { // BMP stocke les lignes à l'envers
+        for (int j = 0; j < img->width; j++) {
+            t_pixel p = img->data[i][j];
+            fwrite(&p.blue,  sizeof(uint8_t), 1, file);
+            fwrite(&p.green, sizeof(uint8_t), 1, file);
+            fwrite(&p.red,   sizeof(uint8_t), 1, file);
         }
-        fwrite(pad, sizeof(uint8_t), padding, file);
+        fwrite(pad, 1, padding, file); // padding
     }
 
     fclose(file);
+
+    // Affichage des informations du fichier BMP
+    printf("\nInformations sur l'image BMP sauvegardée :\n");
+    printf("Type : %c%c\n", (char)(img->header.type & 0xFF), (char)(img->header.type >> 8));
+    printf("Taille du fichier : %u octets\n", img->header.size);
+    printf("Offset des données : %u octets\n", img->header.offset);
+    printf("Largeur : %d pixels\n", img->header_info.width);
+    printf("Hauteur : %d pixels\n", img->header_info.height);
+    printf("Profondeur de couleur : %d bits\n", img->header_info.bits);
+    printf("Compression : %u\n", img->header_info.compression);
+    printf("Taille des données d'image : %u octets\n", img->header_info.imagesize);
+    printf("Résolution horizontale : %d\n", img->header_info.xresolution);
+    printf("Résolution verticale : %d\n", img->header_info.yresolution);
 }
