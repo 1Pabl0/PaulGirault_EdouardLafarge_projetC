@@ -9,5 +9,6 @@ void afficher_instructions();
 int menu_filtres();
 int menu_principal();
 void menu_nb();
+void menu_filtres_couleur_complet();
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_MENU_H

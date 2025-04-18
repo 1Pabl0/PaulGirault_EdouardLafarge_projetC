@@ -3,7 +3,105 @@
 #include "menu.h"
 #include "bmp8_niveau_de_gris.h"
 #include "bmp8_couleur.h"
+void menu_filtres_couleur_complet() {
+    int choix;
+    t_bmp24 *img = NULL;
 
+    const char *input = "../DATA/lena_color.bmp";
+    const char *output = "../DATA/lena_color_output.bmp";
+
+    while (1) {
+        printf("\n🎨 Menu des filtres pour image couleur :\n");
+        printf("1. Négatif\n");
+        printf("2. Niveaux de gris\n");
+        printf("3. Luminosité\n");
+        printf("4. Flou (Box blur)\n");
+        printf("5. Flou gaussien\n");
+        printf("6. Netteté\n");
+        printf("7. Contours\n");
+        printf("8. Relief (Emboss)\n");
+        printf("9. Retour\n");
+        printf("Votre choix -> ");
+        scanf("%d", &choix);
+
+        if (choix == 9) return;
+
+        img = bmp24_loadImage(input);
+        if (!img) {
+            printf("❌ Erreur de chargement de l’image.\n");
+            continue;
+        }
+
+        switch (choix) {
+            case 1:
+                bmp24_negative(img);
+                break;
+            case 2:
+                bmp24_grayscale(img);
+                break;
+            case 3: {
+                int val;
+                printf("Valeur de luminosité (-255 à 255) : ");
+                scanf("%d", &val);
+                bmp24_brightness(img, val);
+                break;
+            }
+            case 4: {
+                float **k = boxBlurKernel();
+                t_bmp24 *blurred = bmp24_applyFilter(img, k, 3);
+                bmp24_free(img);
+                img = blurred;
+                for (int i = 0; i < 3; i++) free(k[i]);
+                free(k);
+                break;
+            }
+            case 5: {
+                float **k = gaussianBlurKernel();
+                t_bmp24 *blurred = bmp24_applyFilter(img, k, 3);
+                bmp24_free(img);
+                img = blurred;
+                for (int i = 0; i < 3; i++) free(k[i]);
+                free(k);
+                break;
+            }
+            case 6: {
+                float **k = sharpenKernel();
+                t_bmp24 *sharpened = bmp24_applyFilter(img, k, 3);
+                bmp24_free(img);
+                img = sharpened;
+                for (int i = 0; i < 3; i++) free(k[i]);
+                free(k);
+                break;
+            }
+            case 7: {
+                float **k = outlineKernel();
+                t_bmp24 *outlined = bmp24_applyFilter(img, k, 3);
+                bmp24_free(img);
+                img = outlined;
+                for (int i = 0; i < 3; i++) free(k[i]);
+                free(k);
+                break;
+            }
+            case 8: {
+                float **k = embossKernel();
+                t_bmp24 *embossed = bmp24_applyFilter(img, k, 3);
+                bmp24_free(img);
+                img = embossed;
+                for (int i = 0; i < 3; i++) free(k[i]);
+                free(k);
+                break;
+            }
+            default:
+                printf("Choix invalide.\n");
+                bmp24_free(img);
+                continue;
+        }
+
+        bmp24_saveImage(img, output);
+        bmp24_free(img);
+        printf("✅ Filtre appliqué et image enregistrée dans %s\n", output);
+    }
+}
 void menu_nb() {
     int choix;
     t_bmp8 *img = NULL;
@@ -82,7 +180,7 @@ void menu_couleur() {
 
         switch (choix) {
             case 1:
-                menu_couleur();
+                menu_filtres_couleur_complet();
             break;
             case 2:
                 img = bmp24_loadImage(input);
