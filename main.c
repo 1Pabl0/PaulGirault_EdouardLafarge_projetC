@@ -6,7 +6,7 @@
 
 int main() {
     printf("hello, bienvenue");
-    Menu();
+    menu_principal();
 
     return 0;
 }
