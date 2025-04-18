@@ -1,5 +1,5 @@
-#ifndef PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
-#define PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
+#ifndef PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP24_H
+#define PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP24_H
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -104,7 +104,6 @@ void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, F
 void bmp24_negative (t_bmp24 * img);
 void bmp24_grayscale (t_bmp24 * img);
 void bmp24_brightness (t_bmp24 * img, int value);
-void bmp24_brightness (t_bmp24 * img, int value);
 t_pixel bmp24_convolution (t_bmp24 * img, int x, int y, float ** kernel, int kernelSize);
 float **sharpenKernel();
 float **embossKernel();
@@ -113,4 +112,4 @@ float **gaussianBlurKernel();
 float **boxBlurKernel();
 t_bmp24 *bmp24_applyFilter(t_bmp24 *img, float **kernel, int kernelSize);
 
-#endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_COULEUR_H
+#endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP24_H

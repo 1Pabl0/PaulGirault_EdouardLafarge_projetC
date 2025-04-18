@@ -1,6 +1,6 @@
-#include "bmp8_couleur.h"
+#include "bmp24.h"
 
-char image_c[] = "../DATA/lena_color.bmp";
+char image_c[] = "/DATA/lena_color.bmp";
 void bmp24_readPixelData(FILE *file, t_bmp24 *img) {
     int padding = (4 - (img->width * 3) % 4) % 4;
     fseek(file, img->header.offset, SEEK_SET);
@@ -106,30 +106,30 @@ t_bmp24 * bmp24_loadImage(const char *filename) {
         return NULL;
     }
 
-    // Lire largeur, hauteur, profondeur depuis les bons offsets
-    uint32_t width, height;
-    uint16_t depth;
+    t_bmp_header header;
+    t_bmp_info header_info;
 
-    file_rawRead(BITMAP_WIDTH, &width, sizeof(uint32_t), 1, file);
-    file_rawRead(BITMAP_HEIGHT, &height, sizeof(uint32_t), 1, file);
-    file_rawRead(BITMAP_DEPTH, &depth, sizeof(uint16_t), 1, file);
+    // Lire les en-têtes
+    file_rawRead(BITMAP_MAGIC, &header, sizeof(t_bmp_header), 1, file);
+    file_rawRead(HEADER_SIZE, &header_info, sizeof(t_bmp_info), 1, file);
 
-    if (depth != DEFAULT_DEPTH) {
-        printf("Erreur : profondeur différente de 24 bits (%d lue).\n", depth);
+    // Vérification de la profondeur
+    if (header_info.bits != DEFAULT_DEPTH) {
+        printf("Erreur : profondeur différente de 24 bits (%d lue).\n", header_info.bits);
         fclose(file);
         return NULL;
     }
 
     // Allouer l'image
-    t_bmp24 *img = bmp24_allocate(width, height, depth);
+    t_bmp24 *img = bmp24_allocate(header_info.width, header_info.height, header_info.bits);
     if (!img) {
         fclose(file);
         return NULL;
     }
 
-    // Lire les en-têtes via file_rawRead
-    file_rawRead(BITMAP_MAGIC, &img->header, sizeof(t_bmp_header), 1, file);
-    file_rawRead(HEADER_SIZE, &img->header_info, sizeof(t_bmp_info), 1, file);
+    // Copier les headers dans la structure
+    img->header = header;
+    img->header_info = header_info;
 
     // Lire les pixels
     bmp24_readPixelData(file, img);
@@ -329,22 +329,28 @@ void bmp24_saveImage(t_bmp24 *img, const char *filename) {
         return;
     }
 
-    fwrite(&img->header, sizeof(t_bmp_header), 1, file);
-    fwrite(&img->header_info, sizeof(t_bmp_info), 1, file);
-
     int width = img->width;
     int height = img->height;
     int padding = (4 - (width * 3) % 4) % 4;
+    int rowSize = width * 3 + padding;
     uint8_t pad[3] = {0, 0, 0};
 
+    // ✅ Mise à jour des métadonnées BMP
+    img->header.offset = sizeof(t_bmp_header) + sizeof(t_bmp_info);
+    img->header.size = img->header.offset + rowSize * height;
+
+    fwrite(&img->header, sizeof(t_bmp_header), 1, file);
+    fwrite(&img->header_info, sizeof(t_bmp_info), 1, file);
+
+    // Écriture des pixels
     fseek(file, img->header.offset, SEEK_SET);
 
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             uint8_t bgr[3] = {
-                img->data[height - 1 - i][j].blue,
-                img->data[height - 1 - i][j].green,
-                img->data[height - 1 - i][j].red
+                    img->data[height - 1 - i][j].blue,
+                    img->data[height - 1 - i][j].green,
+                    img->data[height - 1 - i][j].red
             };
             fwrite(bgr, sizeof(uint8_t), 3, file);
         }
