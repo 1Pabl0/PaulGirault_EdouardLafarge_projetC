@@ -167,28 +167,35 @@ void bmp24_grayscale(t_bmp24 *img) {
 }
 
 
-void bmp24_brightness (t_bmp24 * img, int value) {
+void bmp24_brightness(t_bmp24 *img, int value) {
     if (!img || !img->data) return;
-    printf("De combien voulez vous augmenter/baisser la luminosité de l'image : ");
-    scanf("%d", &value);
+
     for (int i = 0; i < img->height; i++) {
         for (int j = 0; j < img->width; j++) {
             t_pixel *p = &img->data[i][j];
-            p->red   = value + p->red;
-            p->green = value + p->green;
-            p->blue  = value + p->blue;
-                if (p->red > 255 ){
-                    p->red   = 255;
-                    if(p->blue > 255){
-                    p->blue=255;
-                    if(p->green>255){
-                     p->green=255;
-                        }
-             }
-            }
+
+            // Red
+            int red = p->red + value;
+            if (red > 255) red = 255;
+            if (red < 0) red = 0;
+            p->red = red;
+
+            // Green
+            int green = p->green + value;
+            if (green > 255) green = 255;
+            if (green < 0) green = 0;
+            p->green = green;
+
+            // Blue
+            int blue = p->blue + value;
+            if (blue > 255) blue = 255;
+            if (blue < 0) blue = 0;
+            p->blue = blue;
         }
     }
 }
+
+
 
 
 t_pixel bmp24_convolution(t_bmp24 *img, int x, int y, float **kernel, int kernelSize) {

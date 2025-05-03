@@ -41,10 +41,11 @@ void menu_filtres_couleur_complet() {
                 bmp24_grayscale(img);
                 break;
             case 3: {
-                int val;
-                printf("Valeur de luminosité (-255 à 255) : ");
-                scanf("%d", &val);
-                bmp24_brightness(img, val);
+                int value;
+                printf("De combien voulez-vous modifier la luminosité (-255 à 255) : ");
+                scanf("%d", &value);
+                bmp24_brightness(img, value);
+
                 break;
             }
             case 4: {

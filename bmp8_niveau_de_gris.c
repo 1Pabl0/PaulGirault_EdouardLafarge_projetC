@@ -256,3 +256,4 @@ void bmp8_filterOutline(t_bmp8 * img) {
     for (int i = 0; i < 3; i++) free(kernel[i]);
     free(kernel);
 }
+
