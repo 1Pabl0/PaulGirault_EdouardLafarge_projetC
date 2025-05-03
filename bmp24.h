@@ -79,26 +79,7 @@ t_bmp24 * bmp24_loadImage (const char * filename);
 
 void bmp24_saveImage (t_bmp24 * img, const char * filename);
 
-/*
-* @brief Positionne le curseur de fichier à la position position dans le fichier file,
-* puis lit n éléments de taille size dans buffer.
-* @param position La position à partir de laquelle il faut lire dans file.
-* @param buffer Le buffer pour stocker les données lues.
-* @param size La taille de chaque élément à lire.
-* @param n Le nombre d'éléments à lire.
-* @param file Le descripteur de fichier dans lequel il faut lire.
-* @return void
-*/
-/*
-* @brief Positionne le curseur de fichier à la position position dans le fichier file,
-* puis écrit n éléments de taille size depuis le buffer.
-* @param position La position à partir de laquelle il faut écrire dans file.
-* @param buffer Le buffer contenant les éléments à écrire.
-* @param size La taille de chaque élément à écrire.
-* @param n Le nombre d'éléments à écrire.
-* @param file Le descripteur de fichier dans lequel il faut écrire.
-* @return void
-*/
+
 void file_rawRead(uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
 void file_rawWrite (uint32_t position, void * buffer, uint32_t size, size_t n, FILE * file);
 //Fonctions de filtres
@@ -114,6 +95,7 @@ float **outlineKernel();
 float **gaussianBlurKernel();
 float **boxBlurKernel();
 t_bmp24 *bmp24_applyFilter(t_bmp24 *img, float **kernel, int kernelSize);
+void bmp24_equalize(t_bmp24 *img);
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP24_H
 #pragma pack(pop)

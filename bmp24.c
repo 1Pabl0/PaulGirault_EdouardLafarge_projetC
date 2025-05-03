@@ -373,3 +373,87 @@ void bmp24_saveImage(t_bmp24 *img, const char *filename) {
 
     fclose(file);
 }
+
+void bmp24_equalize(t_bmp24 *img) {
+    if (!img || !img->data) return;
+
+    int width = img->width;
+    int height = img->height;
+    int size = width * height;
+
+    // 1. Allouer un tableau pour les valeurs Y (luminance)
+    float *Y = malloc(size * sizeof(float));
+    if (!Y) return;
+
+    // 2. Conversion RGB → Y (luminance)
+    int i, j, k = 0;
+    for (i = 0; i < height; i++) {
+        for (j = 0; j < width; j++, k++) {
+            t_pixel p = img->data[i][j];
+            Y[k] = 0.299 * p.red + 0.587 * p.green + 0.114 * p.blue;
+        }
+    }
+
+    // 3. Histogramme de Y
+    int hist[256] = {0};
+    for (k = 0; k < size; k++) {
+        int y = (int)(Y[k] + 0.5);
+        if (y < 0) y = 0;
+        if (y > 255) y = 255;
+        hist[y]++;
+    }
+
+    // 4. Histogramme cumulé
+    int cdf[256] = {0};
+    cdf[0] = hist[0];
+    for (i = 1; i < 256; i++) {
+        cdf[i] = cdf[i - 1] + hist[i];
+    }
+
+    // 5. Trouver cdf_min
+    int cdf_min = 0;
+    for (i = 0; i < 256; i++) {
+        if (cdf[i] != 0) {
+            cdf_min = cdf[i];
+            break;
+        }
+    }
+
+    // 6. Mapping de l’égalisation
+    unsigned char map[256];
+    for (i = 0; i < 256; i++) {
+        map[i] = (unsigned char)(((float)(cdf[i] - cdf_min) / (size - cdf_min)) * 255.0 + 0.5);
+        if (map[i] < 0) map[i] = 0;
+        if (map[i] > 255) map[i] = 255;
+    }
+
+    // 7. Appliquer le nouveau Y et retransformer vers RGB
+    k = 0;
+    for (i = 0; i < height; i++) {
+        for (j = 0; j < width; j++, k++) {
+            float oldY = Y[k];
+            int yIndex = (int)(oldY + 0.5);
+            if (yIndex < 0) yIndex = 0;
+            if (yIndex > 255) yIndex = 255;
+
+            float newY = map[yIndex];
+            t_pixel *p = &img->data[i][j];
+
+            // Reconversion YUV → RGB avec les mêmes U,V implicites (non modifiés)
+            float R = newY + (p->red - oldY);
+            float G = newY + (p->green - oldY);
+            float B = newY + (p->blue - oldY);
+
+            // Clamp
+            if (R < 0) R = 0; if (R > 255) R = 255;
+            if (G < 0) G = 0; if (G > 255) G = 255;
+            if (B < 0) B = 0; if (B > 255) B = 255;
+
+            p->red = (uint8_t)(R + 0.5);
+            p->green = (uint8_t)(G + 0.5);
+            p->blue = (uint8_t)(B + 0.5);
+        }
+    }
+
+    free(Y);
+}

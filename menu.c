@@ -21,11 +21,12 @@ void menu_filtres_couleur_complet() {
         printf("6. Netteté\n");
         printf("7. Contours\n");
         printf("8. Relief (Emboss)\n");
-        printf("9. Retour\n");
+        printf("9. Histogramme en 24 bits : Image égalisée");
+        printf("0. Retour\n");
         printf("Votre choix -> ");
         scanf("%d", &choix);
 
-        if (choix == 9) return;
+        if (choix == 0) return;
 
         img = bmp24_loadImage(input);
         if (!img) {
@@ -92,7 +93,11 @@ void menu_filtres_couleur_complet() {
                 for (int i = 0; i < 3; i++) free(k[i]);
                 free(k);
                 break;
+
             }
+            case 9:
+                bmp24_equalize(img);
+                break;
             default:
                 printf("Choix invalide.\n");
                 bmp24_free(img);
