@@ -355,7 +355,8 @@ int menu_principal() {
         printf("1. 📷 Image en noir et blanc\n");
         printf("2. 🌈 Image en couleur\n");
         printf("3. 📘 Instructions d'utilisation\n");
-        printf("4. ❌ Quitter\n");
+        printf("4. $ Crédit\n");
+        printf("5. ❌ Quitter\n");
         printf("==============================\n");
         printf("Votre choix -> ");
         scanf("%d", &choix);
@@ -371,6 +372,8 @@ int menu_principal() {
                 afficher_instructions();
             break;
             case 4:
+                printf("Fait par Edouard Lafarge et Paul Girault");
+            case 5:
                 printf("Merci d’avoir utilisé notre programme ! À bientôt 👋\n");
             return 0;
             default:
