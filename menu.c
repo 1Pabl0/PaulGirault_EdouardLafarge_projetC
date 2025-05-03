@@ -373,6 +373,7 @@ int menu_principal() {
             break;
             case 4:
                 printf("Fait par Edouard Lafarge et Paul Girault");
+                break;
             case 5:
                 printf("Merci d’avoir utilisé notre programme ! À bientôt 👋\n");
             return 0;
