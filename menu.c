@@ -355,7 +355,7 @@ int menu_principal() {
         printf("1. 📷 Image en noir et blanc\n");
         printf("2. 🌈 Image en couleur\n");
         printf("3. 📘 Instructions d'utilisation\n");
-        printf("4. $ Crédit\n");
+        printf("4. 💰 Crédit\n");
         printf("5. ❌ Quitter\n");
         printf("==============================\n");
         printf("Votre choix -> ");
@@ -379,6 +379,7 @@ int menu_principal() {
             default:
                 printf("Choix invalide. Veuillez entrer un nombre entre 1 et 4.\n");
         }
+
     }
 }
 
