@@ -9,4 +9,6 @@ add_executable(PaulGirault_EdouardLafarge_projetC main.c
         menu.c
         menu.h
         bmp24.c
-        bmp24.h)
+        bmp24.h
+        Partie3.c
+        Partie3.h)
