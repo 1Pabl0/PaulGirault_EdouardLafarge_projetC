@@ -161,7 +161,7 @@ void bmp8_applyFilter(t_bmp8 * img, float ** kernel, int kernelSize) {
         return;
     }
 
-    // Parcours de l'image (sans les bords)
+
     for (int y = n; y < img->height - n; y++) {
         for (int x = n; x < img->width - n; x++) {
             float somme = 0.0;
@@ -242,7 +242,7 @@ void bmp8_filterOutline(t_bmp8 * img) {
             { -1, -1, -1 }
     };
 
-    // Allocation du kernel dynamique
+
     float **kernel = malloc(3 * sizeof(float*));
     for (int i = 0; i < 3; i++) {
         kernel[i] = malloc(3 * sizeof(float));
