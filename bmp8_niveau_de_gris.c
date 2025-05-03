@@ -299,7 +299,7 @@ void bmp8_equalize(t_bmp8 * img, unsigned int * hist_eq) {
         LUT[i] = (unsigned char)(((float)hist_eq[i] - hist_eq[0]) / (totalPixels - hist_eq[0]) * 255.0 + 0.5);
     }
 
-    // Appliquer la transformation à chaque pixel
+
     for (unsigned int i = 0; i < img->dataSize; i++) {
         img->data[i] = LUT[img->data[i]];
     }

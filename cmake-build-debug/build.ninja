@@ -73,12 +73,6 @@ build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp24.c.o: C_COMPILER__P
   OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
   OBJECT_FILE_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
 
-build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/Partie3.c.o: C_COMPILER__PaulGirault_EdouardLafarge_projetC_unscanned_Debug /Users/paulgirault/CLionProjects/PaulGirault_EdouardLafarge_projetC/Partie3.c || cmake_object_order_depends_target_PaulGirault_EdouardLafarge_projetC
-  DEP_FILE = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/Partie3.c.o.d
-  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
-  OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
-  OBJECT_FILE_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PaulGirault_EdouardLafarge_projetC
@@ -87,7 +81,7 @@ build CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/Partie3.c.o: C_COMPILER_
 #############################################
 # Link the executable PaulGirault_EdouardLafarge_projetC
 
-build PaulGirault_EdouardLafarge_projetC: C_EXECUTABLE_LINKER__PaulGirault_EdouardLafarge_projetC_Debug CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/main.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_niveau_de_gris.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/menu.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp24.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/Partie3.c.o
+build PaulGirault_EdouardLafarge_projetC: C_EXECUTABLE_LINKER__PaulGirault_EdouardLafarge_projetC_Debug CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/main.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp8_niveau_de_gris.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/menu.c.o CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir/bmp24.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk
   OBJECT_DIR = CMakeFiles/PaulGirault_EdouardLafarge_projetC.dir
   POST_BUILD = :
