@@ -221,11 +221,12 @@ int menu_filtres(){
            "5. Netteté\n"
            "6. Contours\n"
            "7. Relief\n"
-           "8. Retourner au menu précédent");
+           "8. Égalisation d’histogramme en 8 bits\n"
+           "9. Retourner au menu précédent");
     printf("Votre choix ->");
     int choix = 0;
     scanf("%d",&choix);
-    while (choix>8 || choix<1){
+    while (choix>9 || choix<1){
         printf("Votre choix -> ");
         scanf("%d",&choix);
     }
@@ -297,6 +298,43 @@ int menu_filtres(){
         bmp8_free(img);
         printf("Filtre appliqué avec succès !\n");
         break;
+        case 8:
+            img = bmp8_loadImage("../DATA/lena_gray.bmp");
+            if (img == NULL) {
+                printf("Erreur : impossible de charger l’image.\n");
+                return 1;
+            }
+
+            // Calcul de l'histogramme
+            unsigned int *hist = bmp8_computeHistogram(img);
+            if (hist == NULL) {
+                printf("Erreur lors du calcul de l'histogramme.\n");
+                bmp8_free(img);
+                return 1;
+            }
+
+            // Calcul de la fonction de distribution cumulée (CDF)
+            unsigned int *cdf = bmp8_computeCDF(hist);
+            if (cdf == NULL) {
+                printf("Erreur lors du calcul de la CDF.\n");
+                free(hist);
+                bmp8_free(img);
+                return 1;
+            }
+
+            // Application de l'égalisation d'histogramme
+            bmp8_equalize(img, cdf);
+
+            // Sauvegarde de l'image modifiée
+            bmp8_saveImage("../DATA/lena_gray_output.bmp", img);
+            printf("Égalisation d’histogramme appliquée avec succès !\n");
+
+            // Libération de la mémoire
+            free(hist);
+            free(cdf);
+            bmp8_free(img);
+            break;
+
 
 
     }
@@ -319,13 +357,13 @@ int menu_principal() {
 
         switch (choix) {
             case 1:
-                menu_nb();  // nouveau menu noir et blanc
+                menu_nb();
             break;
             case 2:
-                menu_couleur();  // nouveau menu couleur
+                menu_couleur();
             break;
             case 3:
-                afficher_instructions();  // texte d'aide
+                afficher_instructions();
             break;
             case 4:
                 printf("Merci d’avoir utilisé notre programme ! À bientôt 👋\n");

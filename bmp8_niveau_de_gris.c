@@ -257,3 +257,50 @@ void bmp8_filterOutline(t_bmp8 * img) {
     free(kernel);
 }
 
+
+unsigned int * bmp8_computeHistogram(t_bmp8 * img) {
+    if (!img || !img->data) return NULL;
+
+    unsigned int *hist = calloc(256, sizeof(unsigned int));
+    if (!hist) return NULL;
+
+    for (unsigned int i = 0; i < img->dataSize; i++) {
+        unsigned char pixel = img->data[i];
+        hist[pixel]++;
+    }
+
+    return hist;
+}
+
+
+unsigned int * bmp8_computeCDF(unsigned int * hist) {
+    if (!hist) return NULL;
+
+    unsigned int *cdf = malloc(256 * sizeof(unsigned int));
+    if (!cdf) return NULL;
+
+    cdf[0] = hist[0];
+    for (int i = 1; i < 256; i++) {
+        cdf[i] = cdf[i - 1] + hist[i];
+    }
+
+    return cdf;
+}
+
+
+void bmp8_equalize(t_bmp8 * img, unsigned int * hist_eq) {
+    if (!img || !img->data || !hist_eq) return;
+
+    unsigned int totalPixels = img->width * img->height;
+    unsigned char LUT[256]; // Lookup table de correspondance
+
+    // Créer la table de correspondance en utilisant la formule d’égalisation d’histogramme
+    for (int i = 0; i < 256; i++) {
+        LUT[i] = (unsigned char)(((float)hist_eq[i] - hist_eq[0]) / (totalPixels - hist_eq[0]) * 255.0 + 0.5);
+    }
+
+    // Appliquer la transformation à chaque pixel
+    for (unsigned int i = 0; i < img->dataSize; i++) {
+        img->data[i] = LUT[img->data[i]];
+    }
+}

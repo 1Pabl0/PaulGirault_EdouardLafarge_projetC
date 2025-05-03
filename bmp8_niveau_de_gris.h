@@ -29,7 +29,9 @@ unsigned int * bmp8_computeHistogram(t_bmp8 * img);
 unsigned int * bmp8_computeCDF(unsigned int * hist);
 void bmp8_equalize(t_bmp8 * img, unsigned int * hist_eq);
 
-
+unsigned int * bmp8_computeHistogram(t_bmp8 * img);
+unsigned int * bmp8_computeCDF(unsigned int * hist);
+void bmp8_equalize(t_bmp8 * img, unsigned int * hist_eq);
 /*
  * — header : représente l’en-tête du fichier BMP. Cet en-tête est composé de 54 octets.
 — colorTable : représente la table de couleur de l’image. Cette table est composée de 1024 octets. On
