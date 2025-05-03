@@ -21,7 +21,7 @@ void menu_filtres_couleur_complet() {
         printf("6. Netteté\n");
         printf("7. Contours\n");
         printf("8. Relief (Emboss)\n");
-        printf("9. Histogramme en 24 bits : Image égalisée");
+        printf("9. Histogramme en 24 bits : Image égalisée\n");
         printf("0. Retour\n");
         printf("Votre choix -> ");
         scanf("%d", &choix);
