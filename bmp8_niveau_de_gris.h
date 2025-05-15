@@ -42,3 +42,5 @@ rappelle que pour une image de 8 bits de profondeur, la table de couleur obligat
  */
 
 #endif //PAULGIRAULT_EDOUARDLAFARGE_PROJETC_BMP8_NIVEAU_DE_GRIS_H
+
+
